@@ -17,6 +17,18 @@ class Application {
             __DIR__ . '/../app/Views',
             __DIR__ . '/../storage/framework/views'
         );
+
+        $this->loadRoutes();
+    }
+
+    protected function loadRoutes() {
+        $basePath = __DIR__ . '/../routes';
+        if (file_exists($basePath . '/web.php')) {
+            require $basePath . '/web.php';
+        }
+        if (file_exists($basePath . '/api.php')) {
+            require $basePath . '/api.php';
+        }
     }
 
     public static function instance(): self {

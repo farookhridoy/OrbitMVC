@@ -51,6 +51,13 @@ switch ($command) {
         require __DIR__ . '/worker.php';
         break;
 
+    case 'orbit:serve':
+        $host = '127.0.0.1';
+        $port = 8000;
+        echo "\e[32mOrbitMVC development server started:\e[0m http://{$host}:{$port}\n";
+        passthru("php -S {$host}:{$port} -t public");
+        break;
+
     case 'help':
     default:
         echo "\e[34mOrbitMVC CLI v1.0\e[0m\n";
@@ -60,5 +67,6 @@ switch ($command) {
         echo "  \e[32mmake:model\e[0m <Name>       Create a new Active Record model\n";
         echo "  \e[32mview:clear\e[0m              Clear compiled template cache\n";
         echo "  \e[32mqueue:work\e[0m              Start the background job worker\n";
+        echo "  \e[32morbit:serve\e[0m             Start the development server\n";
         break;
 }
