@@ -69,6 +69,7 @@ OrbitMVC comes with a built-in CLI tool for fast development:
 - `php orbit make:model User` - Scaffold an ORM model
 - `php orbit view:clear` - Purge compiled view cache
 - `php orbit queue:work` - Start the background job worker
+- `php orbit:serve` - Start the development server
 
 ## 🤝 Contributing
 
