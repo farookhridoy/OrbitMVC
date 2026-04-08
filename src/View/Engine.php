@@ -34,13 +34,16 @@ class Engine {
 
         // Check for inheritance (LAYOUT instruction from compiler)
         if (str_starts_with($output, 'LAYOUT:')) {
-            [$layoutInfo, $childContentEncoded] = explode('|CONTENT:', $output);
-            $layoutName = str_replace('LAYOUT:', '', $layoutInfo);
-            $childContent = base64_decode($childContentEncoded);
+            $parts = explode('|', $output);
+            $layoutName = str_replace('LAYOUT:', '', $parts[0]);
+            $sections = unserialize(base64_decode(str_replace('SECTIONS:', '', $parts[1])));
+            $childContent = base64_decode(str_replace('CONTENT:', '', $parts[2]));
 
-            // Re-render with layout context
-            // In a better version, we'd pass the sections to the layout
-            return $this->render($layoutName, array_merge($data, ['content' => $childContent]));
+            // Re-render with layout context, passing sections through
+            return $this->render($layoutName, array_merge($data, [
+                'content'  => $childContent,
+                'sections' => $sections,
+            ]));
         }
 
         return $output;

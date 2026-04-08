@@ -28,30 +28,38 @@ class Compiler {
     }
 
     protected function handleInheritance(string $content): string {
-        // Capture sections
-        preg_match_all('/@section\([\'"](.*?)[\'"]\)(.*?)@endsection/s', $content, $matches);
+        // Capture multi-line sections
+        preg_match_all('/@section\([\'"]([^\'\"]*)[\'\"]\)(.*?)@endsection/s', $content, $matches);
         foreach ($matches[1] as $index => $name) {
             $this->sections[$name] = trim($matches[2][$index]);
         }
 
-        // Remove section blocks from the content
-        $content = preg_replace('/@section\([\'"](.*?)[\'"]\)(.*?)@endsection/s', '', $content);
-
-        // Check for @extends
-        if (preg_match('/@extends\([\'"](.*?)[\'"]\)/', $content, $match)) {
-            $this->layout = $match[1];
-            // Remove the @extends directive
-            $content = preg_replace('/@extends\([\'"](.*?)[\'"]\)/', '', $content);
-            
-            // Generate the code to load the layout and inject sections
-            // We return a instruction that the Engine will use
-            return "LAYOUT:{$this->layout}|CONTENT:" . base64_encode($content);
+        // Capture single-line sections e.g. @section('title', 'My Title')
+        preg_match_all('/@section\([\'"]([^\'\"]*)[\'\"]\s*,\s*(.*?)\)/', $content, $matches_single);
+        foreach ($matches_single[1] as $index => $name) {
+            $val = trim($matches_single[2][$index]);
+            if (preg_match('/^[\'"](.*)[\'"]$/', $val, $vMatch)) {
+                $val = $vMatch[1];
+            }
+            $this->sections[$name] = $val;
         }
 
-        // Handle @yield for layouts
-        $content = preg_replace_callback('/@yield\([\'"](.*?)[\'"]\)/', function($m) {
-            return $this->sections[$m[1]] ?? '';
-        }, $content);
+        // Remove multi-line section blocks from the content
+        $content = preg_replace('/@section\([\'"]([^\'\"]*)[\'\"]\)(.*?)@endsection/s', '', $content);
+        // Remove single-line section blocks
+        $content = preg_replace('/@section\([\'"]([^\'\"]*)[\'\"]\s*,\s*(.*?)\)/', '', $content);
+
+        // Check for @extends
+        if (preg_match('/@extends\([\'"](.*?)[\'\"]\)/', $content, $match)) {
+            $this->layout = $match[1];
+            $content = preg_replace('/@extends\([\'"](.*?)[\'\"]\)/', '', $content);
+
+            // Pass sections + content to the Engine via a structured marker
+            return "LAYOUT:{$this->layout}|SECTIONS:" . base64_encode(serialize($this->sections)) . "|CONTENT:" . base64_encode($content);
+        }
+
+        // Handle @yield for layouts - eval allows PHP code inside sections to execute
+        $content = preg_replace('/@yield\([\'"](.*?)[\'"]\)/', '<?php $__name="$1"; $__val = $sections[$__name] ?? ($$__name ?? ""); eval("?> " . $__val); ?>', $content);
 
         return $content;
     }
