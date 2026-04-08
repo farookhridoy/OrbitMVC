@@ -4,6 +4,7 @@
  * OrbitMVC High-Performance Worker
  * This script processes background jobs from Redis.
  * Run this via CLI: php worker.php
+ * Author: Md Omar farook
  */
 
 require_once __DIR__ . '/vendor/autoload.php';
