@@ -1,0 +1,7 @@
+/vendor
+/storage/framework/views/*.php
+.env
+.phpunit.result.cache
+.vscode
+php_errors.log
+composer.lock

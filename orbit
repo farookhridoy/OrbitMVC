@@ -1,0 +1,64 @@
+<?php
+
+/**
+ * OrbitMVC CLI Tool
+ * Usage: php orbit [command] [arguments]
+ */
+
+require_once __DIR__ . '/vendor/autoload.php';
+
+$command = $argv[1] ?? 'help';
+$name = $argv[2] ?? null;
+
+switch ($command) {
+    case 'make:controller':
+        if (!$name) {
+            echo "\e[31mError:\e[0m Controller name is required.\n";
+            exit(1);
+        }
+        $path = __DIR__ . "/app/Controllers/{$name}.php";
+        if (file_exists($path)) {
+            echo "\e[33mWarning:\e[0m Controller already exists.\n";
+            exit(1);
+        }
+        $template = "<?php\n\nnamespace App\Controllers;\n\nuse OrbitMVC\Controller\BaseController;\n\nclass {$name} extends BaseController {\n    public function index() {\n        return \$this->json(['message' => 'Hello from {$name}']);\n    }\n}\n";
+        file_put_contents($path, $template);
+        echo "\e[32mSUCCESS:\e[0m Controller created at app/Controllers/{$name}.php\n";
+        break;
+
+    case 'make:model':
+        if (!$name) {
+            echo "\e[31mError:\e[0m Model name is required.\n";
+            exit(1);
+        }
+        $path = __DIR__ . "/app/Models/User.php"; // Defaulting to User for example if name is missing but here we use $name
+        $path = __DIR__ . "/app/Models/{$name}.php";
+        $template = "<?php\n\nnamespace App\Models;\n\nuse OrbitMVC\Model\BaseModel;\n\nclass {$name} extends BaseModel {\n    // protected static \$table = 'custom_table_name';\n}\n";
+        file_put_contents($path, $template);
+        echo "\e[32mSUCCESS:\e[0m Model created at app/Models/{$name}.php\n";
+        break;
+
+    case 'view:clear':
+        $files = glob(__DIR__ . '/storage/framework/views/*.php');
+        foreach ($files as $file) {
+            unlink($file);
+        }
+        echo "\e[32mSUCCESS:\e[0m View cache cleared.\n";
+        break;
+
+    case 'queue:work':
+        echo "\e[34mINFO:\e[0m Starting queue worker...\n";
+        require __DIR__ . '/worker.php';
+        break;
+
+    case 'help':
+    default:
+        echo "\e[34mOrbitMVC CLI v1.0\e[0m\n";
+        echo "Usage: php orbit [command] [arguments]\n\n";
+        echo "Available Commands:\n";
+        echo "  \e[32mmake:controller\e[0m <Name>  Create a new controller\n";
+        echo "  \e[32mmake:model\e[0m <Name>       Create a new Active Record model\n";
+        echo "  \e[32mview:clear\e[0m              Clear compiled template cache\n";
+        echo "  \e[32mqueue:work\e[0m              Start the background job worker\n";
+        break;
+}

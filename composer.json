@@ -1,0 +1,23 @@
+{
+    "name": "farook/orbitmvc",
+    "description": "A high-performance, reusable PHP MVC framework core designed for massive concurrency",
+    "type": "library",
+    "keywords": ["php", "mvc", "framework", "high-performance", "blade", "orm", "queue"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Md Omar farook",
+            "email": "farookhridoy@gmail.com",
+            "homepage": "http://farookhridoy.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "OrbitMVC\\": "src/",
+            "App\\": "app/"
+        }
+    },
+    "require": {
+        "php": ">=8.1"
+    }
+}
