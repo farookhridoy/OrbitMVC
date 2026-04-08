@@ -18,58 +18,31 @@
 
 ## 📦 Installation
 
-You can install the core framework via Composer:
+### Method 1: Create Project (Recommended)
+Start a new project with the full scaffold structure:
+```bash
+composer create-project farook/orbitmvc my-app
+cd my-app
+php orbit orbit:serve
+```
 
+### Method 2: Manual Installation
+Install the core into an existing project:
 ```bash
 composer require farook/orbitmvc
-```
-
-Or clone the repository to start a new project:
-
-```bash
-git clone https://github.com/farookhridoy/OrbitMVC.git
-cd OrbitMVC
-composer install
-```
-
-## 🛠 Usage
-
-### Routing & Views
-Define your routes in `public/index.php` (or your routes file) and render compiled views:
-
-```php
-$router->add('GET', '/', function() {
-    return view('home', ['name' => 'OrbitMVC']);
-});
-```
-
-### Active Record ORM
-Interact with your data using simple model classes:
-
-```php
-// Find all active users
-$users = User::where('status', 'active')->get();
-
-// Find a single user
-$user = User::find(1);
-```
-
-### High-Speed Queue
-Offload heavy tasks to the Redis queue:
-
-```php
-(new RegistrationService())->register($userData);
-// Response is sent immediately while processing happens in the background
+vendor/bin/orbit init
+php orbit orbit:serve
 ```
 
 ## 💻 CLI Commands
 OrbitMVC comes with a built-in CLI tool for fast development:
 
-- `php orbit make:controller UserController` - Scaffold a controller
-- `php orbit make:model User` - Scaffold an ORM model
+- `php orbit init` - Scaffold the project structure (app, public, routes, storage)
+- `php orbit orbit:serve` - Start the development server at localhost:8000
+- `php orbit make:controller <Name>` - Create a new controller
+- `php orbit make:model <Name>` - Create a new Active Record model
 - `php orbit view:clear` - Purge compiled view cache
 - `php orbit queue:work` - Start the background job worker
-- `php orbit:serve` - Start the development server
 
 ## 🤝 Contributing
 
