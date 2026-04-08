@@ -24,6 +24,12 @@
         "phpunit/phpunit": "^10.0"
     },
     "scripts": {
-        "test": "vendor/bin/phpunit"
-    }
+        "test": "vendor/bin/phpunit",
+        "post-create-project-cmd": [
+            "@php orbit init"
+        ]
+    },
+    "bin": [
+        "orbit"
+    ]
 }

@@ -1,26 +1,29 @@
 @extends('layout')
 
-@section('title', 'Welcome Home')
+@section('title', 'OrbitMVC - High Performance PHP')
 
 @section('content')
-    <h1>Welcome to OrbitMVC <span class="badge">v1.0</span></h1>
-    <p>This page is rendered using our custom <strong>Blade-like Template Engine</strong>.</p>
-    
-    <h3>High-Performance Features Implemented:</h3>
-    <ul>
-        <li><strong>Compiled Views:</strong> Fast execution via filesystem caching.</li>
-        <li><strong>Redis Queue:</strong> Ready for async processing (70k+ users).</li>
-        <li><strong>Stateless Core:</strong> Optimized for RoadRunner/Swoole.</li>
-    </ul>
+    <div class="hero">
+        <h1>OrbitMVC <span class="badge">v1.0.3</span></h1>
+        <p class="subtitle">Scaffolded successfully. You're ready to build at scale.</p>
+    </div>
 
-    <p>Current User session mock: <strong>{{ $username }}</strong></p>
+    <div class="card-grid">
+        <div class="card">
+            <h3>🚀 Fast & Efficient</h3>
+            <p>Built with a high-speed Blade-like template engine and atomic caching.</p>
+        </div>
+        <div class="card">
+            <h3>📦 Ready to Scale</h3>
+            <p>Integrated Redis-backed async queues for 70k+ concurrent tasks.</p>
+        </div>
+        <div class="card">
+            <h3>🛠️ Modern CLI</h3>
+            <p>Scaffold controllers, models, and environments in seconds.</p>
+        </div>
+    </div>
 
-    @if(count($features) > 0)
-        <h3>Core Modules:</h3>
-        <ul>
-            @foreach($features as $feature)
-                <li>{{ $feature }}</li>
-            @endforeach
-        </ul>
-    @endif
+    <div class="footer-msg">
+        <p>Current Session: <strong>{{ $username }}</strong></p>
+    </div>
 @endsection

@@ -58,6 +58,45 @@ switch ($command) {
         passthru("php -S {$host}:{$port} -t public");
         break;
 
+    case 'init':
+        echo "\e[34mINFO:\e[0m Initializing OrbitMVC project structure...\n";
+        $source = __DIR__;
+        $dest = getcwd();
+
+        $folders = ['app', 'public', 'routes', 'storage'];
+        foreach ($folders as $folder) {
+            if (!is_dir("$dest/$folder")) {
+                echo "Creating $folder/...\n";
+                mkdir("$dest/$folder", 0755, true);
+                
+                // Recursive copy
+                $srcFolder = "$source/$folder";
+                $files = new RecursiveIteratorIterator(
+                    new RecursiveDirectoryIterator($srcFolder, RecursiveDirectoryIterator::SKIP_DOTS),
+                    RecursiveIteratorIterator::SELF_FIRST
+                );
+                foreach ($files as $file) {
+                    $target = "$dest/$folder/" . $files->getSubPathName();
+                    if ($file->isDir()) {
+                        if (!is_dir($target)) mkdir($target);
+                    } else {
+                        copy($file, $target);
+                    }
+                }
+            } else {
+                echo "\e[33mWarning:\e[0m $folder already exists, skipping.\n";
+            }
+        }
+
+        // Copy orbit binary if it doesn't exist in root
+        if (!file_exists("$dest/orbit")) {
+            copy("$source/orbit", "$dest/orbit");
+            chmod("$dest/orbit", 0755);
+        }
+        
+        echo "\e[32mSUCCESS:\e[0m Project initialized! Run \e[32mphp orbit orbit:serve\e[0m to start.\n";
+        break;
+
     case 'help':
     default:
         echo "\e[34mOrbitMVC CLI v1.0\e[0m\n";
@@ -68,5 +107,6 @@ switch ($command) {
         echo "  \e[32mview:clear\e[0m              Clear compiled template cache\n";
         echo "  \e[32mqueue:work\e[0m              Start the background job worker\n";
         echo "  \e[32morbit:serve\e[0m             Start the development server\n";
+        echo "  \e[32minit\e[0m                    Scaffold project structure\n";
         break;
 }

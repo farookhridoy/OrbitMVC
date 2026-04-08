@@ -5,12 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $title }} - OrbitMVC</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f4f7f6; color: #333; line-height: 1.6; }
-        .container { max-width: 800px; margin: 50px auto; background: white; padding: 40px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        h1 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
-        .footer { margin-top: 30px; font-size: 0.8em; color: #7f8c8d; text-align: center; }
-        .badge { background: #3498db; color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.9em; }
+        body { font-family: 'Outfit', 'Inter', sans-serif; background: #0f172a; color: #e2e8f0; line-height: 1.6; margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+        .container { max-width: 900px; width: 90%; background: #1e293b; padding: 60px; border-radius: 24px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); border: 1px solid #334155; }
+        .hero { text-align: center; margin-bottom: 50px; }
+        h1 { color: #f8fafc; font-size: 3rem; margin: 0; letter-spacing: -0.05em; }
+        .badge { background: linear-gradient(135deg, #38bdf8, #818cf8); color: white; padding: 4px 12px; border-radius: 9999px; font-size: 0.4em; vertical-align: middle; }
+        .subtitle { color: #94a3b8; font-size: 1.25rem; margin-top: 10px; }
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px; margin-top: 40px; }
+        .card { background: #334155; padding: 24px; border-radius: 16px; border: 1px solid #475569; transition: transform 0.2s; }
+        .card:hover { transform: translateY(-5px); border-color: #38bdf8; }
+        .card h3 { margin-top: 0; color: #38bdf8; }
+        .footer { margin-top: 50px; font-size: 0.9rem; color: #64748b; text-align: center; border-top: 1px solid #334155; padding-top: 20px; }
+        .footer-msg { text-align: center; margin-top: 20px; font-size: 0.9rem; color: #94a3b8; }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
