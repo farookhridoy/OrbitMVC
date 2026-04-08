@@ -6,11 +6,15 @@ use OrbitMVC\Http\Request;
 use OrbitMVC\Routing\Router;
 
 class Application {
+    protected static ?self $instance = null;
     protected Router $router;
     protected Request $request;
     protected \OrbitMVC\View\Engine $view;
 
     public function __construct() {
+        if (self::$instance === null) {
+            self::$instance = $this;
+        }
         $this->router = new Router();
         $this->request = new Request();
         $this->view = new \OrbitMVC\View\Engine(
@@ -32,11 +36,10 @@ class Application {
     }
 
     public static function instance(): self {
-        static $instance = null;
-        if (!$instance) {
-            $instance = new self();
+        if (self::$instance === null) {
+            new self();
         }
-        return $instance;
+        return self::$instance;
     }
 
     public function view(): \OrbitMVC\View\Engine {
